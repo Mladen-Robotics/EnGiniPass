@@ -1,0 +1,169 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnGiniPass - Create unique easy to remember passwords!</title>
+    <meta name="google-signin-client_id"
+        content="941836559759-va537vrci12u6osj2d9oihrtsacnhsl0.apps.googleusercontent.com">
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <link rel="stylesheet" href="{% static 'user_authentication/signup/signup_style.css' %}">
+</head>
+
+<body>
+    <div class="circle">
+    </div>
+    <div class="circle">
+    </div>
+    <div id="logo">
+        <img id="logo_black" src="{% static 'user_authentication/signup/images/logo_black_text.svg' %}" alt="EnGiniPass">
+        <img id="logo_white" src="{% static 'user_authentication/signup/images/logo_text.svg' %}" alt="EnGiniPass">
+    </div>
+    <div style="overflow: auto" id="wrapper">
+        <div class="wrapper_top">
+            <div id="wrapper_logo">
+                <img src="{% static 'user_authentication/signup/images/logo_black.svg' %}" alt="EnGiniPass">
+                <img src="{% static 'user_authentication/signup/images/logo.svg' %}" alt="EnGiniPass">
+            </div>
+            <div id="wrapper_theme">
+                <img id="moon" src="{% static 'user_authentication/signup/images/moon_icon.svg' %}" alt="">
+                <img id="sun" src="{% static 'user_authentication/signup/images/sun_icon.svg' %}" alt="">
+            </div>
+        </div>
+        <div id="signin" class="signin_signup">
+            <div class="wrapper_header">
+                <h1>Welcome, let's SIGN UP!</h1>
+            </div>
+            <div id="progress">
+                <svg class="check check_active" xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+                    viewBox="0 0 40 40">
+                    <path id="Path_242" data-name="Path 242"
+                        d="M22,41A19,19,0,1,0,3,22,19,19,0,0,0,22,41m-.49-11.316L32.066,17.018l-3.243-2.7L19.745,25.207l-4.7-4.7-2.985,2.985L18.4,29.826,20.03,31.46Z"
+                        transform="translate(-2 -2)" fill="none" stroke="#888" stroke-width="2" fill-rule="evenodd" />
+                </svg>
+                <div class="line"></div>
+                <svg class="check" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                    <path id="Path_242" data-name="Path 242"
+                        d="M22,41A19,19,0,1,0,3,22,19,19,0,0,0,22,41m-.49-11.316L32.066,17.018l-3.243-2.7L19.745,25.207l-4.7-4.7-2.985,2.985L18.4,29.826,20.03,31.46Z"
+                        transform="translate(-2 -2)" fill="none" stroke="#888" stroke-width="2" fill-rule="evenodd" />
+                </svg>
+                <div class="line"></div>
+                <svg class="check" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+                    <path id="Path_242" data-name="Path 242"
+                        d="M22,41A19,19,0,1,0,3,22,19,19,0,0,0,22,41m-.49-11.316L32.066,17.018l-3.243-2.7L19.745,25.207l-4.7-4.7-2.985,2.985L18.4,29.826,20.03,31.46Z"
+                        transform="translate(-2 -2)" fill="none" stroke="#888" stroke-width="2" fill-rule="evenodd" />
+                </svg>
+            </div>
+            {% if error %}
+                <h3 style = "color:red">{{ error }}</h3>
+            {% endif %}
+            <form id="forms_wrapper" action="" method="POST">
+                {% csrf_token %}
+                <div class="step_form" >
+                    <div class="inputs">
+                        <div class="input_field">
+                            <input id="signin_username" name="signup_username" type="text" autocomplete="off">
+                            <label for="signin_username" >Username <span>*</span></label>
+                            <!-- <label for="signin_username" {% if username %}value="{{ username }}"{% else %}class="placeholder"{% endif %}>Username <span>*</span></label> -->
+                        </div>
+                        <div class="input_field">
+                            <input id="signin_password" name="signup_password" type="password" autocomplete="off">
+                            <label for="signin_password" >Password <span>*</span></label>
+                            <div class="eye_input">
+                                <img id="signin_eye_open" src="{% static 'user_authentication/signup/images/eye_open_icon.svg' %}">
+                                <img id="signin_eye_closed" src="{% static 'user_authentication/signup/images/eye_closed_icon.svg' %}">
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <p style="visibility: hidden;" class="previous">Previous</p>
+                        <p id="required_next" class="next next_disabled">Next</p>
+                    </div>
+                </div>
+                <div id="name_surname" class="step_form" action="#">
+                    <div class="inputs">
+                        <div class="input_field">
+                            <input id="signin_name" name="signup_name" type="text" autocomplete="off">
+                            <label for="signin_name" >Name</label>
+                        </div>
+                        <div class="input_field">
+                            <input id="signin_surname" name="signup_surname" type="text" autocomplete="off">
+                            <label for="signin_surname">Surname</label>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <p class="previous">Previous</p>
+                        <p class="next">Next / Skip</p>
+                    </div>
+
+                </div>
+                <div id="birth_date" class="step_form" action="#">
+                    <div id="birth_date_area"></div>
+                    <svg id="clear_icon" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                        viewBox="0 0 24 24">
+                        <path fill="currentColor"
+                            d="M19 15.59L17.59 17L14 13.41L10.41 17L9 15.59L12.59 12L9 8.41L10.41 7L14 10.59L17.59 7L19 8.41L15.41 12zM22 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H7c-.69 0-1.23-.36-1.59-.89L0 12l5.41-8.12C5.77 3.35 6.31 3 7 3zm0 2H7l-4.72 7L7 19h15z" />
+                    </svg>
+                    <label for="signin_date">Date of birth: </label>
+                    <div class="inputs">
+                        <div style="z-index: 100;" id="date" class="input_field">
+                            <input id="date" name="signup_day" type="number">
+                            <label for="signin_date">Day</label>
+                        </div>
+                        <input style="display: none" type="text" name="signup_month" id="month_value">
+                        <ul id="month_list">
+                            <li>Jan.</li>
+                            <li>Feb.</li>
+                            <li>March</li>
+                            <li>April</li>
+                            <li>May</li>
+                            <li>June</li>
+                            <li>July</li>
+                            <li>Aug.</li>
+                            <li>Sept.</li>
+                            <li>Oct.</li>
+                            <li>Nov.</li>
+                            <li>Dec.</li>
+                        </ul>
+                        <div onmousedown="month_list_active()" id="month" class="input_field">
+                            <input id="date_of_birth_input" onmousedown="month_list_active()" readonly type="text">
+                            <label onmousedown="month_list_active()" for="date_of_birth_input">
+                                <p onmousedown="month_list_active()">Month</p>
+                                <svg id="month_arrow" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                    viewBox="0 0 24 24">
+                                    <path fill="currentColor"
+                                        d="M3 19h18a1.002 1.002 0 0 0 .823-1.569l-9-13c-.373-.539-1.271-.539-1.645 0l-9 13A.999.999 0 0 0 3 19" />
+                                </svg>
+                            </label>
+                        </div>
+                        <div id="year" class="input_field">
+                            <input type="text" name="signup_year">
+                            <label for="signin_password">Year</label>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <p class="previous">Previous</p>
+                    </div>
+                    <div class="submit_btn">
+                        <div class="outline_submit_btn"></div>
+                        <div class="outline_submit_btn"></div>
+                        <button type="submit" id="signin_btn">SIGN UP</button>
+                    </div>
+
+                </div>
+            </form>
+            <div style="z-index: 1;" id="to_signup" class="to_other_form">
+                <p>If you have an account <a href="{% url 'login'%}">LOG IN</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- </div> -->
+    <script defer src="{% static 'user_authentication/signup/signup.js' %}"></script>
+</body>
+
+</html>
+

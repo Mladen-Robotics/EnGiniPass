@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password results box</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="results_container">
+        <div class="box" id="results_box">
+            <h1 id="results_header">What do you think?</h1>
+            <ul id="results_list">
+            </ul>
+            <form id="result_buttons_wrapper">
+                <button type="button" id="cancel_results">Cancel</button>
+                <button type="submit" name="generate_more" id="generate_more">Generate more</button>
+            </form>
+        </div>
+        <div class="box" id="edit_result_box">
+            <form id="result_form">
+                <h1>Do you wanna make some corrections?</h1>
+                <input id="edit_result_input" type="text" maxlength="35" autocomplete="off">
+                <div id="result_buttons_wrapper"><button type="button" id="results_back">Back</button><button
+                        type="submit" id="submit_result">Ok</button></div>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+
+</html>

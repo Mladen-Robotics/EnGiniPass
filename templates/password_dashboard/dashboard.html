@@ -1,0 +1,1034 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnGiniPass</title>
+    <link rel="stylesheet" href="{% static 'password_dashboard/index.css' %}">
+    <link rel="stylesheet" href="{% static 'password_dashboard/tag_input.css' %}">
+    <!-- <link rel="stylesheet" href="length_input.css"> -->
+    <link rel="stylesheet" href="{% static 'password_dashboard/options.css' %}">
+    <link rel="stylesheet" href="{% static 'password_dashboard/cathegories_field.css' %}">
+    <link rel="stylesheet" href="{% static 'password_dashboard/results_box.css' %}">
+</head>
+
+<body>
+
+    <header>
+        <!-- <img src="{% static 'password_dashboard/cathegories_images/cooking.svg' %}" alt=""> -->
+        <a href="#">
+            <img class="logo" src="{% static 'password_dashboard/images/logo_text_dark.svg' %}" alt="EnGiniPass"></a>
+        <img class="logo logo_dark_show" src="{% static 'password_dashboard/images/logo_text_white.svg' %}" alt="EnGiniPass"></a>
+        <div>
+            <div id="profile_icons">
+                <img id="profile_dark" src="{% static 'password_dashboard/images/profile_icon_dark.svg' %}" alt="">
+                <img class="profile_white_show " id="profile_white" src="{% static 'password_dashboard/images/profile_icon_white.svg' %}" alt="">
+            </div>
+            <div id="theme_icons">
+                <img id="moon" src="{% static 'password_dashboard/images/moon_icon.svg' %}" alt="">
+                <img class="theme_icon_show" id="sun" src="{% static 'password_dashboard/images/sun_icon.svg' %}" alt="">
+            </div>
+
+        </div>
+        <form id="profile_box">
+
+            <a style="text-decoration: none;" href="{% url 'logout' %}">
+            <button type="button">
+                <img src="{% static 'password_dashboard/images/exit_icon.svg' %}">
+                <p>LOG OUT</p>
+            </button>
+        </a>
+        </form>
+    </header>
+    <!-- ----------------------------------------------------------- -->
+    <div id="passwords_wrapper">
+        <span>
+            {% for password in passwords %}
+                <div class="password_box">
+                    <div class="password_box_header">
+                        <h1>{{ password.0.name }}</h1>
+                        <!-- <img src="cathegories_images/social_media.svg"> -->
+                         <!-- <h1 style="color: red">{{ password.1 }}</h1> -->
+                        <img img="small_banner" src="{% static '{{ password.1 }}' %}">
+
+                    </div>
+                    <div class="password_box_details">
+                        <ul>
+                            <li>
+                                <img src="{% static 'password_dashboard/images/calendar.svg' %}">
+                                <p>Created on 1 April 2024</p>
+                            </li>
+                            <li>
+                                <img src="{% static 'password_dashboard/cathegories_images/{{category_image}}' %}">
+                                <p>Social media</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- <div class="password_box">
+                <div class="password_box_header">
+                    <h1>www.facebook.com</h1>
+                    <img img="small_banner" src="cathegories_images/social_media.svg">
+                </div>
+                <div class="password_box_details">
+                    <ul>
+                        <li>
+                            <img src="images/calendar.svg">
+                            <p>Created on 1 April 2024</p>
+                        </li>
+                        <li>
+                            <img src="cathegories_images/social_media.svg">
+                            <p>Social media</p>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+            <!-- <div class="password_box">
+                    <img img="small_banner" src="cathegories_images/social_media.svg">
+                </div>
+                <div class="password_box_details">
+                    <ul>
+                        <li>
+                            <img src="images/calendar.svg">
+                            <p>Created on 1 April 2024</p>
+                        </li>
+                        <li>
+                            <img src="cathegories_images/social_media.svg">
+                            <p>Social media</p>
+                        </li>
+                    </ul>
+                </div>
+            </div> -->
+        </span>
+    </div>
+    <!-- ----------------------------------------------------------- -->
+    <div id="results_container">
+        <div class="box" id="results_box">
+            <h1 id="results_header">What do you think?</h1>
+            <ul id="results_list">
+                {% for password in generated_passwords %}
+                    <li><h2>{{ password }}</h2></li>
+                {% endfor %}
+            </ul>
+            <div id="result_buttons_wrapper">
+                {% csrf_token %}
+                <!-- {{generate_more_form}} -->
+                <button type="button" id="cancel_results">Cancel</button>
+                <!-- <button type="submit" id="generate_more" name="generate_more_form">Generate more</button> -->
+            </div>
+        </div>
+        <div class="box" id="edit_result_box">
+            <form method="post" id="result_form" action="">
+                {% csrf_token %}
+                <h1>Do you wanna make some corrections?</h1>
+                <input id="edit_result_input" name="edit_result_input" type="text" maxlength="35" autocomplete="off">
+                <div id="result_buttons_wrapper"><button type="button" id="results_back">Back</button><button
+                        type="submit" id="submit_result">Ok</button></div>
+                <input id="website_name_hidden" name="website_name_hidden"  type="text">
+                <input id="cathegory_hidden" name="cathegory_hidden" type="text">
+            </form>
+        </div>
+    </div>
+     {% if not passwords %}
+    <div id="no_passwords">
+        <div id="no_password_images">
+            <img src="{% static 'password_dashboard/images/no_passwords_dark.svg' %}" alt="You don't have passwords yet">
+            <img class="no_password_img_show" src="{% static 'password_dashboard/images/no_passwords_light.svg' %}" alt="You don't have passwords yet">
+        </div>
+        <p>You don't have passwords yet</p>
+        <button id="create_password">
+            <img src="{% static 'password_dashboard/images/plus_icon.svg' %}" alt="">
+            Create password
+        </button>
+    </div>
+    {% endif %}
+
+    <input style="display: block;" type="text" id="cathegory_input_hidden" name="cathegory_input_hidden">e
+    <form id="new_password_wrapper" method="post" action="">
+        {% csrf_token %}
+        <h1 id="password_name">New Password Name</h1>
+        <div id="input_fields">
+            <div id="cathegories_container">
+                <!-- -------------------------- -->
+                <div id="cathegories_input_field">
+                    <div id="current_cathegory">
+                        <div>
+                            <img src="">
+                            <p></p>
+                        </div>
+                        <img id="remove_cathegory" src="{% static 'password_dashboard/cathegories_images/delete.svg' %}">
+                    </div>
+                    <!-- -------------------------- -->
+                    <input id="cathegories_input" type="text" maxlength="40" autocomplete="off">
+                    <p id="cathegories_placeholder">What it is about? <span>*</span></p>
+                    <!-- <label id="cathegories_label" for="cathegories_input">What it is about? <span>*</span></label> -->
+
+                </div>
+                <div id="cathegories_wrapper">
+                    <ul>
+                        <span>
+                        </span>
+                        <li>
+                            <img src="{% static 'password_dashboard/cathegories_images/other.svg' %}">
+                            <p>Other</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="input_field">
+                <input id="name_input" type="text"  name="website_name" maxlength="30" autocomplete="off">
+                <label for="name_input">Website name <span>*</span></label>
+            </div>
+        </div>
+        <div id="additional_pass_info">
+            <div class="additional_pass_box">
+                <label for="pass_words">Words your password must contain:</label>
+                <div id="tag_input_container">
+                    <input type="text" style="display: none;" id="tags_result_hidden" name="tags_result_hidden">
+                    <p class="show_placeholder" id="placeholder">E.g. spaghetti, cat</p>
+                    <ul id="tags_wrapper">
+                        <span>
+                        </span>
+                        <input id="tag_input" type="text" maxlength="20" autocomplete="off">
+                    </ul>
+                    <p id="left"><span>10</span> tags are remaining</p>
+                    <button type="button" id="remove_all">Remove All</button>
+                </div>
+                <div id="options_container">
+                    <ul>
+                        {% if  user.username %}
+                        <li>
+                            <div class="checkbox">
+                                <input id="options_name" name="include_name" type="checkbox">
+                                <div class="tick"></div>
+                            </div>
+                            <label for="options_name">Your name (<span id="name_span">{{user.username}}</span>)</label>
+                            
+                        </li>
+                        {% endif %}
+                        <!-- <h1 style="color:red">Name: {{user.last_name}}</h1> -->
+                        {% if  user.last_name %}
+                        <li>
+                            <div class="checkbox">
+                                <input id="surname" name="include_surname" type="checkbox">
+                                <div class="tick"></div>
+                            </div>
+                            <label for="surname">Your surname (<span id="surname_span">{{user.last_name}}</span>)</label>
+                        </li>
+                        {% endif %}
+                        <!-- <h1 style="color:red">Date:{{user.userprofilemodel.date_of_birth}}</h1> -->
+                        {% if user.userprofilemodel.date_of_birth %}
+                        <li>
+                            <div class="checkbox">
+                                <input id="birthday" name="include_age" type="checkbox">
+                                <div class="tick"></div>
+                            </div>
+                            <label for="birthday">Your age / birthday</label>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="additional_pass_box">
+                <input type="text" style="display:block;" id="difficulty_level_hidden" name="difficulty_level_hidden">
+                <label for="pass_words">Level difficulty: <span>*</span></label>
+                <div id="difficulty_level">
+                    <div id="difficulty_level_slider"></div>
+                    <label for="easy">
+                        <input id="easy" level="easy" type="radio" name="difficulty">
+                        <p>Easy</p>
+                    </label>
+                    <label for="moderate">
+                        <input id="moderate" level="moderate" type="radio" name="difficulty" checked>
+                        <p>Moderate</p>
+                    </label>
+                    <label for="hard">
+                        <input id="hard" level="hard" type="radio" name="difficulty">
+                        <p>Hard</p>
+                    </label>
+                </div>
+                <!-- <label for="pass_words">Length: <span>*</span></label>
+                <div id="length_container">
+                    <div id="current_value">12</div>
+                    <input min="4" max="20" type="range">
+                    <div id="main_line">
+                        <div id="line_left" class="line"></div>
+                        <div id="line_center" class="line"></div>
+                        <div id="line_right" class="line"></div>
+                    </div>
+                </div> -->
+                <div id="buttons_wrapper">
+                    <button type="button" id="cancel">
+                        <img src="{% static 'password_dashboard/images/cancel_icon.svg' %}" alt="">
+                        Cancel</button>
+                    <button id="generate">
+                        <img src="{% static 'password_dashboard/images/generate_icon.svg' %}" alt="">
+                        Generate password</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+<input id="results_hidden" type="text" value="{{generated_passwords.0}},{{generated_passwords.1}},{{generated_passwords.2}}">
+    {% if generated_passwords %}
+        {% for password in generated_passwords %}
+            <h1 class="password_h1" style="color: red">{{password}}</h1>
+        {% endfor %}
+    {% endif %}
+
+    <!-- <script src="{% static 'password_dashboard/cathegories.js' %}"></script> -->
+    <!-- <script src="{% static 'password_dashboard/tag_input.js' %}"></script> -->
+    <script>
+        // ------------------ Tag input ------------------
+        const tags_input = document.querySelector("#tag_input");
+const tags_wrapper = document.querySelector("#tags_wrapper");
+const tags_wrapper_field = document.querySelector("#tags_wrapper span");
+const placeholder = document.querySelector("#placeholder");
+const left = document.querySelector("#left");
+const remove_all = document.querySelector("#remove_all");
+let delete_icons = document.querySelectorAll(".tag img");
+let tags = document.querySelectorAll(".tag");
+let words = [];
+let all_words = [];
+
+tags_input.addEventListener("keypress", (event) => {
+    if (event.key == 'Enter') {
+        examineInput(tags_input.value);
+    }
+})
+
+function managePlaceholder() {
+
+    tags_input.addEventListener("focus", () => {
+        placeholder.classList.remove("show_placeholder");
+    })
+
+    tags_input.addEventListener("blur", () => {
+        if (all_words.length == 0) {
+            if (tags_input.value == '') {
+                placeholder.classList.add("show_placeholder");
+            } else {
+                placeholder.classList.remove("show_placeholder");
+            }
+        }
+        if (tags_input.value != '') {
+            examineInput(tags_input.value);
+            tags_input.value = '';
+        }
+    })
+    if (all_words.length == 0) {
+        if (tags_input.value == '') {
+            placeholder.classList.add("show_placeholder");
+        } else {
+            placeholder.classList.remove("show_placeholder");
+        }
+    }
+}
+
+managePlaceholder()
+
+function examineInput(inpVal) {
+    row_words = inpVal.split(',');
+    meaningful_indexes = [];
+    formated_words = [];
+    for (i = 0; i < row_words.length; i++) {
+        row_words[i] = row_words[i].trim();
+        if (row_words[i] != '') {
+            meaningful_indexes.push(i)
+        }
+    }
+
+    function addTags(words) {
+    if (parseInt(left.querySelector("span").textContent) > 0) {
+        tags_for_adding = "";
+        color_options = ["#ffde08", "#41c708", "#5b45ff", "#bb45ff", "#ff4570", "#31def5"];
+        for (i = 0; i < words.length; i++) {
+            random_color = color_options[(Math.floor(Math.random() * color_options.length))];
+            tags_for_adding += `<li style="--color: ${random_color}" class="tag"><p>${words[i]}</p><img src="{% static 'password_dashboard/images/delete.svg' %}" alt="delete" draggable="false"></li>`;
+            left.querySelector("span").textContent = parseInt(left.querySelector("span").textContent) - 1;
+        }
+        tags_wrapper_field.innerHTML += tags_for_adding;
+        delete_icons = document.querySelectorAll(".tag img");
+        tags = document.querySelectorAll(".tag");
+        tags_wrapper.scrollTop = tags_wrapper.scrollHeight;
+        deleteEvent();
+    }
+}
+
+function removeShort(words){
+    newTags = [];
+    for(i = 0; i < words.length; i++){
+        if(words[i].length >= 2){
+            newTags.push(words[i]);
+            all_words.push(words[i]);
+        }
+    }
+    return newTags;
+}
+
+    for (i = 0; i < meaningful_indexes.length; i++) {
+        formated_words[i] = row_words[meaningful_indexes[i]]
+    }
+    formated_words = removeDuplicates(formated_words);
+    formated_words = removeShort(formated_words);
+    if (parseInt(left.querySelector("span").textContent) - formated_words.length <= 0) {
+        formated_words = formated_words.slice(0, parseInt(left.querySelector("span").textContent));
+    }
+    tags_input.value = '';
+    tags_input.focus();
+    addTags(formated_words);
+}
+
+function removeDuplicates(inp_arr) {
+    newTags = [];
+    for (i = 0; i < inp_arr.length; i++) {
+        if (!newTags.includes(inp_arr[i])) {
+            if (!all_words.includes(inp_arr[i])) {
+                newTags.push(inp_arr[i]);
+            }
+        }
+    }
+
+    return newTags;
+}
+
+
+function deleteEvent() {
+    delete_icons.forEach((this_icon, index) => {
+        this_icon.addEventListener("click", () => {
+            tags[index].remove();
+            index_for_deleting = tags[index].querySelector("p").textContent;
+            all_words.splice(index_for_deleting, 1);
+            left.querySelector("span").textContent = parseInt(left.querySelector("span").textContent) + 1;
+            managePlaceholder();
+        })
+    })
+}
+
+remove_all.addEventListener(("click"), () => {
+    tags_wrapper_field.innerHTML = "";
+    left.querySelector("span").textContent = 10;
+    all_words = [];
+    placeholder.classList.add("show_placeholder");
+    tags_input.value = "";
+})
+     </script>
+     <script>
+        let cathegories_list = document.querySelector("#cathegories_wrapper");
+const cathegories_input = document.querySelector("#cathegories_input_field input");
+const current_cathegory = document.querySelector("#current_cathegory");
+const remove_cathegory = document.querySelector("#remove_cathegory");
+const cathegories_placeholder = document.querySelector("#cathegories_placeholder");
+const generate = document.querySelector("#generate");
+const cathegory_input_hidden = document.querySelector("#cathegory_input_hidden");
+console.log(current_cathegory);
+
+let abc = [
+    {
+        "title": "Sport",
+        "image": "{% static 'password_dashboard/cathegories_images/sport.svg' %}",
+        "tags": ["sport", "basketball", "volleybal", "tennis", "baseball", "swimming", "cricket", "exercise", "gym", "workout"]
+    },
+    {
+        "title": "Social media",
+        "image": "{% static 'password_dashboard/cathegories_images/social_media.svg' %}",
+        "box-image": "cathegories_images/social_media_box.svg",
+        "box-color": "#00A6FC",
+        "tags": ["social", "media", "facebook", "viber", "twitter", "instagram"]
+    },
+    {
+        "title": "Programming and IT",
+        "image": "{% static 'password_dashboard/cathegories_images/programming_it.svg' %}",
+        "tags": ["programming", "it", "artificial", "intelligence", "machine", "learning", "ai", "web", "frontend", "backend", "fullstack", "computer", "pc"]
+    },
+    {
+        "title": "Cooking",
+        "image": "{% static 'password_dashboard/cathegories_images/cooking.svg' %}",
+        "tags": ["cooking", "kitchen", "dish", "soup", "receipt", "chef"]
+    },
+    {
+        "title": "Art / Drawing",
+        "image": "{% static 'password_dashboard/cathegories_images/art_drawing.svg' %}",
+        "tags": ["art", "drawing", "sketching", "painting", "illustrating", "beautiful", "artist", "watercolor", "watercolour"]
+    },
+    {
+        "title": "Math",
+        "image": "{% static 'password_dashboard/cathegories_images/math.svg' %}",
+        "tags": ["math", "algebra", "geometry", "science", "school", "equation"]
+    },
+    {
+        "title": "Language",
+        "image": "{% static 'password_dashboard/cathegories_images/language.svg' %}",
+        "tags": ["language", "school", "albanian", "american", "arabic", "armenian", "british", "bulgarian", "chinese", "czech", "dutch", "egyptian", "english", "estonian", "french", "german", "georgian", "greek", "hawaiian", "hindi", "indonesian", "iraqw", "irish", "italian", "japanese", "kannada", "korean", "mongolic", "nigerian", "polish", "portuguese", "russian", "romanian", "serbian", "slavic", "spanish", "taiwanese", "turkish", "ukrainian", "vietnamese"]
+    },
+    {
+        "title": "Science",
+        "image": "{% static 'password_dashboard/cathegories_images/science.svg' %}",
+        "tags": ["science", "math", "physics", "chemistry", "biology", "engineering", "mechanical", "electrical", "computer"]
+    },
+    {
+        "title": "Robotics",
+        "image": "{% static 'password_dashboard/cathegories_images/robotics.svg' %}",
+        "tags": ["robotics", "robot", "engineering", "mechanical", "electrical", "computer", "arduino", "raspberry", "pi", "raspberripi"]
+    },
+    {
+        "title": "Dancing",
+        "image": "{% static 'password_dashboard/cathegories_images/dancing.svg' %}",
+        "tags": ["dancing", "dance", "beauty", "beautiful", "choreography", "balley", "modern", "samba", "tap", "folk", "salsa", "hip", "hop", "hiphop", "acrobatic", "tango", "capoeira"]
+    },
+    {
+        "title": "Music / Singing",
+        "image": "{% static 'password_dashboard/cathegories_images/music_singing.svg' %}",
+        "tags": ["singing", "song", "beautiful", "musician", "singer", "art", "rock", "jazz", "disco", "hip", "hop", "hiphop", "electronic", "folk", "funk", "heavy", "metal"]
+    },
+    {
+        "title": "Video games",
+        "image": "{% static 'password_dashboard/cathegories_images/video_games.svg' %}",
+        "tags": ["video", "games", "videogames", "console", "pc", "computer", "pvp", "online", "offline", "arcade"]
+    },
+    {
+        "title": "Yoga / Mediatation",
+        "image": "{% static 'password_dashboard/cathegories_images/yoga_meditation.svg' %}",
+        "tags": ["yoga", "meditation", "relax", "exercise", "peace", "pilates", "workout", "mind"]
+    },
+    {
+        "title": "Martial arts",
+        "image": "{% static 'password_dashboard/cathegories_images/martial_arts.svg' %}",
+        "tags": ["martial", "arts", "kung", "fu", "kungfu", "taekwondo", "karate", "kickboxing", "hapkido", "aikido", "judo"]
+    },
+    {
+        "title": "Design",
+        "image": "{% static 'password_dashboard/cathegories_images/design.svg' %}",
+        "tags": ["design", "illustrating", "drawing", "sketching", "modern", "art", "artist", "digital"]
+    },
+    {
+        "title": "School / University",
+        "image": "{% static 'password_dashboard/cathegories_images/school_university.svg' %}",
+        "tags": ["school", "university", "colleague", "degree", "master", "science", "profession"]
+    },
+].sort((a, b) => a.title.localeCompare(b.title));
+
+console.log(abc);
+
+cathegory_value = '';
+
+function examinInput() {
+    value = cathegories_input.value;
+    if (value.trim() == '') {
+        cathegories_input.value = '';
+        load_cathegories(abc)
+    } else {
+        searchTags(value);
+    }
+}
+
+function load_cathegories(abc) {
+    
+    var cathegories_list_content = "";
+    for (i = 0; i < abc.length; i++) {
+        cathegories_list_content += `<li><img src="${abc[i].image}"><p>${abc[i].title}</p></li>`;
+    }
+    cathegories_list.querySelector("span").innerHTML = cathegories_list_content;
+    cathegories_list = document.querySelector("#cathegories_wrapper");
+    handleCathegoriesClicking();
+}
+
+
+
+function searchTags(value) {
+    found_indexes = [];
+    input_arr = value.trim().split(' ');
+    newCathegories = [];
+    for (i = 0; i < input_arr.length; i++) {
+        if (input_arr[i] == '') {
+            input_arr.splice(i, 1);
+        }
+    }
+    for (k = 0; k < input_arr.length; k++) {
+        for (i = 0; i < abc.length; i++) {
+            for (j = 0; j < abc[i].tags.length; j++) {
+                if (abc[i].tags[j].toLowerCase().includes(input_arr[k].toLowerCase())) {
+                    if (!found_indexes.includes(i)) {
+                        found_indexes.push(i);
+                    }
+                }
+            }
+        }
+    }
+    for (i = 0; i < found_indexes.length; i++) {
+        newCathegories.push(abc[found_indexes[i]]);
+    }
+    load_cathegories(newCathegories);
+}
+
+// function handlePlaceholder() {
+//     window.addEventListener("mousedown", (e) => {
+//         body = document.querySelector("body");
+//         container = document.querySelector("#container");
+//         if (e.target == body || e.target == container) {
+//             cathegories_placeholder.classList.remove("hide_placeholder");
+//         } else {
+//             cathegories_placeholder.classList.add("hide_placeholder");
+//         }
+//     })
+// }
+
+
+function handleCathegoriesClicking() {
+    cathegories_list.querySelectorAll("li").forEach((this_item) => {
+        this_item.addEventListener("click", () => {
+            cathegories_input.classList.add("hide_placeholder");
+            image_src = this_item.querySelector("img").getAttribute("src");
+            title = this_item.querySelector("p").textContent;
+            a = `{% static '${image_src}' %}`
+            current_cathegory.querySelector("div img").setAttribute("src", image_src);
+            current_cathegory.querySelector("div p").textContent = title;
+            cathegories_input.value = title;
+            cathegory_input_hidden.value = title;
+            console.log(cathegory_input_hidden.value);
+            
+            current_cathegory.classList.add("show_current_cathegory");
+            if (input_field[0].querySelector("input").value.trim() != '') {
+                generate.classList.add("generate_on");
+            }
+        });
+    })
+}
+
+cathegories_input.addEventListener("focus", () => {
+    cathegories_list.classList.add("show_cathegories_list");
+    examinInput()
+    cathegories_list.scrollTop = 0;
+    cathegories_placeholder.classList.add("hide_placeholder");
+});
+
+cathegories_input.addEventListener("blur", () => {
+    cathegories_list.classList.remove("show_cathegories_list");
+    if (cathegories_input.value.trim() != '') {
+        cathegories_placeholder.classList.add("hide_placeholder");
+    } else {
+        cathegories_placeholder.classList.add("hide_placeholder");
+        setTimeout(() => {
+            cathegories_placeholder.classList.remove("hide_placeholder");
+
+        }, 300)
+
+        // handlePlaceholder();
+    }
+});
+
+
+// handlePlaceholder();
+
+
+cathegories_input.addEventListener("keypress", (e) => {
+    if (e.key == ',') {
+        e.preventDefault();
+    }
+})
+
+cathegories_input.addEventListener("input", () => {
+
+    examinInput()
+});
+
+remove_cathegory.addEventListener("click", () => {
+    cathegories_input.value = '';
+    current_cathegory.classList.remove("show_current_cathegory");
+    cathegories_input.focus();
+    cathegory_value = '';
+    generate.classList.remove("generate_on");
+    cathegory_input_hidden.value = "";
+})
+
+     </script>
+    <!-- <script src="{% static 'password_dashboard/length_input.js' %}"></script> -->
+    <script src="{% static 'password_dashboard/options.js' %}"></script>
+    <!-- <script src="{% static 'password_dashboard/cathegories_field.js' %}"></script> -->
+    <!-- <script src="{% static 'password_dashboard/index.js' %}"></script> -->
+
+     <script>
+        
+const root = document.querySelector(":root");
+const new_password_wrapper = document.querySelector("#new_password_wrapper");
+const theme_icons = document.querySelectorAll("#theme_icons img");
+const profile_icons_wrapper = document.querySelector("#profile_icons");
+const profile_icons = document.querySelectorAll("#profile_icons img");
+const logos = document.querySelectorAll(".logo");
+const no_password_images = document.querySelectorAll("#no_password_images img")
+const input_field = document.querySelectorAll(".input_field");
+const difficulty_level = document.querySelector("#difficulty_level");
+const password_name_header = document.querySelector("#password_name");
+const cancel = document.querySelector("#cancel");
+const create_password = document.querySelector("#create_password");
+const profile_box = document.querySelector("#profile_box");
+const name_input = document.querySelector("#name_input");
+const difficulty_level_hidden = document.querySelector("#difficulty_level_hidden");
+const tags_result_hidden = document.querySelector("#tags_result_hidden");
+// const checkbox_inputs = document.querySelectorAll(".checkbox input");
+const name_span = document.querySelector("#name_span");
+const surname_span = document.querySelector("#surname_span");
+let website_name;
+
+let display_level_value = '2';
+let required_words = [];
+
+document.addEventListener("keypress", (event) => {
+    if (event.key == 'Enter') {
+        event.preventDefault();
+    }
+})
+
+
+theme_icons.forEach((this_theme_icon, index) => {
+    this_theme_icon.addEventListener("click", () => {
+        if (index == 0) {
+            theme_icons[0].classList.remove("theme_icon_show")
+            theme_icons[1].classList.add("theme_icon_show");
+            change_theme("dark");
+        } else {
+            theme_icons[0].classList.add("theme_icon_show")
+            theme_icons[1].classList.remove("theme_icon_show");
+            change_theme("light");
+        }
+    })
+})
+
+function change_theme(theme) {
+    if (theme == "dark") {
+        root.style.setProperty("--wrapper-color", "#ffffff81");
+        root.style.setProperty("--bg-color", "#414042");
+        root.style.setProperty("--main-text-color", "#fff");
+        root.style.setProperty("--input-bg-color", "#BCBCBC");
+        root.style.setProperty("--input-placeholder-color", "#3a3a3a");
+        root.style.setProperty("--disable-bg-color", "rgba(169, 179, 179, 0.415)");
+        profile_icons[0].classList.remove("profile_white_show");
+        profile_icons[1].classList.add("profile_white_show");
+        logos[0].classList.remove("logo_dark_show");
+        logos[1].classList.add("logo_dark_show");
+        no_password_images[0].classList.remove("no_password_img_show");
+        no_password_images[1].classList.add("no_password_img_show");
+    } else {
+        root.style.setProperty("--wrapper-color", "#41404281");
+        root.style.setProperty("--bg-color", "#fff");
+        root.style.setProperty("--main-text-color", "black");
+        root.style.setProperty("--input-bg-color", "#2E2E2E");
+        root.style.setProperty("--input-placeholder-color", "#E3E3E3");
+        root.style.setProperty("--disable-bg-color", "rgba(0, 10, 1, 0.315)");
+        profile_icons[0].classList.add("profile_white_show");
+        profile_icons[1].classList.remove("profile_white_show");
+        logos[0].classList.add("logo_dark_show");
+        logos[1].classList.remove("logo_dark_show");
+        no_password_images[0].classList.add("no_password_img_show");
+        no_password_images[1].classList.remove("no_password_img_show");
+    }
+}
+
+input_field.forEach((this_input_field) => {
+
+    if (this_input_field.querySelector("input") != null) {
+        this_input_field.querySelector("input").addEventListener("input", () => {
+            if (this_input_field.querySelector("input").value.trim() != "") {
+                password_name_header.textContent = this_input_field.querySelector("input").value.trim();
+            } else {
+                password_name_header.textContent = "New Password Name";
+            }
+        })
+        this_input_field.querySelector("input").addEventListener("focus", () => {
+            this_input_field.querySelector("label").style.opacity = "0";
+        })
+        this_input_field.querySelector("input").addEventListener("blur", () => {
+            if (this_input_field.querySelector("input").value.trim() == "") {
+                this_input_field.querySelector("input").value = this_input_field.querySelector("input").value.trim();
+                this_input_field.querySelector("label").style.opacity = "1";
+            }
+        })
+    }
+})
+
+difficulty_level.querySelectorAll("input")[1].checked = true;
+
+
+document.querySelectorAll("input").forEach((this_element) => {
+    this_element.addEventListener("input", () => {
+        website_name = input_field[0].querySelector("input").value.trim();
+        console.log(cathegory_value);
+        console.log(cathegory_value + "   " + website_name);
+        // if (cathegory_value != '' && website_name != '') {
+        //     generate.classList.add("generate_on");
+        // } else {
+        //     generate.classList.remove("generate_on");
+        // }
+
+
+        // cathegory_value = current_cathegory.querySelector("p").textContent;
+        // website_name = input_field[0].querySelector("input").value;
+        // console.log(cathegory_value + "  " + website_name);
+    })
+})
+
+cancel.addEventListener("click", () => {
+    new_password_wrapper.classList.remove("show_new_password_wrapper");
+    cathegories_input.value = "";
+current_cathegory.classList.remove("show_current_cathegory");
+remove_all.click();
+})
+
+create_password.addEventListener("click", () => {
+    new_password_wrapper.classList.add("show_new_password_wrapper");
+})
+
+profile_icons_wrapper.addEventListener("click", () => {
+    profile_box.classList.toggle("show_profile_box");
+})
+
+window.addEventListener("click", (e) => {
+    if (e.target == document.body) {
+        profile_box.classList.remove("show_profile_box");
+    }
+})
+     </script>
+        <!-- <script src="{% static 'password_dashboard/results_box.js' %}"></script> -->
+         <script>
+            const results_container = document.querySelector("#results_container")
+const results_header = document.querySelector("#results_header");
+const generate_more_btn = document.querySelector("#generate_more");
+const results_list = document.querySelector("#results_list");
+const results_box = document.querySelector("#results_box");
+const cancel_results = document.querySelector("#cancel_results");
+
+const edit_result_input = document.querySelector("#edit_result_input");
+const submit_result = document.querySelector("#submit_result");
+const results_back = document.querySelector("#results_back");
+
+
+const passwords_list = ["judo_e/\\/\\O_arts", "MAR_EmO!", "/\\/\\ar_EM0_marT!/-\\I!"];
+const more_passwords_list = ["judo_e/\\/\\O_arts", "MAR_EmO!", "/\\/\\ar_EM0_marT!/-\\I!"];
+
+function random_title() {
+    const title_variants = ["What do you think?", "Which one you like more?", "Aren't they cool?", "Here are some results!"];
+    results_header.textContent = title_variants[Math.floor(Math.random() * title_variants.length)];
+}
+
+// function createPasswordElement(password, index, random_color) {
+//     const li = document.createElement("li");
+//     li.style.setProperty("--i", `${index * 0.2}s`);
+//     li.style.setProperty("--j", random_color);
+//     li.innerHTML = `<h2>${password}</h2>`;
+//     return li;
+// }
+
+function show_password_results() {
+    results = document.querySelectorAll(".box ul li");
+    add_results_click_event();
+}
+
+// function generate_more() {
+//     show_password_results(more_passwords_list, true);
+//     generate_more_btn.classList.add("hide_generate_more_btn");
+//     results_list.scroll({
+//         top: results_list.scrollHeight,
+//         behavior: 'smooth'
+//     });
+//     handle_editing_result();
+// }
+
+function add_results_click_event() {
+    results = document.querySelectorAll(".box ul li");
+    results.forEach((this_result) => {
+        this_result.addEventListener("click", () => {
+            document.querySelector("#website_name_hidden").value = document.querySelector("#name_input").value;
+            document.querySelector("#cathegory_hidden").value = document.querySelector("#cathegory_input_hidden").value;
+            console.log("BBB");
+            console.log("AAA");
+            box_content = results_box.innerHTML;
+            results_container.classList.remove("show_results_box");
+            setTimeout(() => {
+                edit_result_input.value = this_result.querySelector("h2").textContent;
+                document.querySelector("#results_box").style = "display: none";
+                // alert(this_result.querySelector("h2").textContent)
+                document.querySelector("#edit_result_box").style = "display: block";
+                results_container.classList.add("show_results_box");
+                submit_result.classList.add("show_submit_result");
+                handle_editing_result();
+                handle_results_back_btn();
+            }, 500)
+        })
+    })
+}
+// function handle_generate_more_btn() {
+//     generate_more_btn.addEventListener("click", () => {
+//         generate_more(more_passwords_list);
+//     });
+// }
+// handle_generate_more_btn();
+
+cancel_results.addEventListener("click", () => {
+    results_container.classList.remove("show_results_box");
+
+});
+
+show_password_results();
+random_title();
+
+function handle_editing_result() {
+    edit_result_input.addEventListener("keypress", (e) => {
+        if (e.key == " ") {
+            e.preventDefault();
+        }
+    })
+    edit_result_input.addEventListener("input", () => {
+        if (edit_result_input.value == '') {
+            submit_result.classList.remove("show_submit_result");
+        } else {
+            submit_result.classList.add("show_submit_result");
+        }
+    })
+}
+
+function handle_results_back_btn() {
+    results_back.addEventListener("click", () => {
+        results_container.classList.remove("show_results_box");
+        setTimeout(() => {
+                // edit_result_input.value = this_result.querySelector("h2").textContent;
+                document.querySelector("#results_box").style = "display: block";
+                // alert(this_result.querySelector("h2").textContent)
+                document.querySelector("#edit_result_box").style = "display: none";
+                results_container.classList.add("show_results_box");
+                submit_result.classList.add("show_submit_result");
+                // handle_editing_result();
+                // handle_results_back_btn();
+            }, 500)
+    })
+}
+
+// document.querySelectorAll("ul li").forEach((this_el)=>{
+//     this_el.addEventListener("click", () => {
+//         alert("RRR")
+//     })
+// })
+         </script>
+    <script>
+         name_input.value = "";
+        name_input.addEventListener("input", ()=>{
+    if(cathegory_input_hidden.value != "" && name_input.value.trim() != ""){
+        generate.classList.add("generate_on");
+    }else{
+        generate.classList.remove("generate_on");
+    }
+})
+        cancel.addEventListener("click", () => {
+            password_name_header.textContent = "New Password Name";
+            cathegory_input_hidden.value = "";
+            generate.classList.remove("generate_on");
+
+            
+    new_password_wrapper.classList.remove("show_new_password_wrapper");
+    checkbox_inputs.forEach((this_checkbox)=>{
+        this_checkbox.checked = false;
+    })
+    name_input.value = "";
+    name_input.focus();
+    name_input.blur();
+    cathegory_input_hidden.focus();
+    cathegory_input_hidden.blur();
+    cathegories_input.value = "";
+current_cathegory.classList.remove("show_current_cathegory");
+remove_all.click();
+difficulty_level.querySelectorAll("input")[1].checked = true;
+difficulty_level.querySelector("#difficulty_level_slider").style.left = `${33.3}%`;
+})
+difficulty_level.querySelectorAll("input")[1].checked = true;
+difficulty_level.querySelector("#difficulty_level_slider").style.left = `${33.3}%`;
+
+difficulty_level.querySelectorAll("input").forEach((this_level)=>{
+    this_level.addEventListener("input", ()=>{
+        if(cathegory_input_hidden.value != '' && name_input.value.trim() != ''){
+            generate.classList.add("generate_on");
+        }else{
+            generate.classList.remove("generate_on");
+        }
+    })
+})
+difficulty_level_hidden.value = "2";
+
+difficulty_level.querySelectorAll("input")[1].checked = true;
+
+difficulty_level.querySelectorAll("input").forEach((this_level, index) => {
+    i = 1;
+    this_level.addEventListener("input", () => {
+        i = index;
+        difficulty_level.querySelector("#difficulty_level_slider").style.left = `${i * 33.3}%`;
+        switch (i) {
+            case 0:
+            difficulty_level_hidden.value = '1';
+                break;
+                case 1:
+                difficulty_level_hidden.value = '2';
+                    break;
+                    case 2:
+                    difficulty_level_hidden.value = '3';
+                        break;
+                        }
+    })
+
+generate.addEventListener("click", () =>{
+    
+    var all_words_lowercase = all_words.map(v => v.toLowerCase());
+    if(document.querySelector("#options_name") && document.querySelector("#options_name").checked == true && all_words_lowercase.includes(name_span.textContent.toLowerCase())) {
+        
+        all_words.splice(all_words_lowercase.indexOf(name_span.textContent.toLowerCase()), 1);
+        }
+        if(document.querySelector("#surname") && document.querySelector("#surname").checked == true && all_words_lowercase.includes(surname_span.textContent.toLowerCase())) {
+            all_words.splice(all_words_lowercase.indexOf(surname_span.textContent.toLowerCase()), 1);
+            }
+        tags_result_hidden.value = all_words;
+        document.querySelector("#website_name_hidden").value = document.querySelector("#name_input").value;
+        document.querySelector("#cathegory_hidden").value = document.querySelector("#cathegory_input_hidden").value;
+
+        alert(document.querySelector("#website_name_hidden").value)
+        alert(document.querySelector("#cathegory_hidden").value)
+    results_container.classList.add("show_results_box");
+
+    // alert(document.querySelector("#results_hidden").value)
+})
+    results_container.classList.add("show_results_box");
+
+tags_input.addEventListener("input", () =>{
+    if(cathegory_input_hidden.value != '' && name_input.value.trim() != ''){
+            generate.classList.add("generate_on");
+        }else{
+            generate.classList.remove("generate_on");
+        }
+})
+checkbox_inputs.forEach((this_checkbox)=>{
+        this_checkbox.checked = false;
+        this_checkbox.addEventListener("input", ()=>{
+            if(cathegory_input_hidden.value != '' && name_input.value.trim() != ''){
+            generate.classList.add("generate_on");
+        }else{
+            generate.classList.remove("generate_on");
+        }
+        })
+    })
+
+})
+// document.querySelector("#new_password_wrapper").submit(()=>{
+    // this.submit();
+    // return false;
+    // })
+   
+
+//     function aaa(){
+//     alert("|" + document.querySelector("#results_hidden").value + "|");
+
+// }
+    </script>
+</body>
+
+</html>

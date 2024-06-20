@@ -1,0 +1,95 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EnGiniPass - Create unique easy to remember passwords!</title>
+    <meta name="google-signin-client_id"
+        content="941836559759-va537vrci12u6osj2d9oihrtsacnhsl0.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <link rel="stylesheet" href="{% static 'user_authentication/login/login_style.css' %}">
+</head>
+
+<body>
+    <div class="circle">
+    </div>
+    <div class="circle">
+    </div>
+    <div id="logo">
+        <img id="logo_black" src="{% static 'user_authentication/login/images/logo_black_text.svg' %}" alt="EnGiniPass">
+        <img id="logo_white" src="{% static 'user_authentication/login/images/logo_text.svg' %}" alt="EnGiniPass">
+    </div>
+    <div id="wrapper">
+        <div class="wrapper_top">
+            <div id="wrapper_logo">
+                <img src="{% static 'user_authentication/login/images/logo_black.svg' %}" alt="EnGiniPass">
+                <img src="{% static 'user_authentication/login/images/logo.svg' %}" alt="EnGiniPass">
+            </div>
+            <div id="wrapper_theme">
+                <img id="moon" src="{% static 'user_authentication/login/images/moon_icon.svg' %}" alt="">
+                <img id="sun" src="{% static 'user_authentication/login/images/sun_icon.svg' %}" alt="">
+            </div>
+        </div>
+        <div id="signin" class="signin_signup">
+            <div class="wrapper_header">
+                <h1>Hi, let's LOG IN!</h1>
+            </div>
+            {% if user_exists == False %}
+                <h3 style = "color:red">Username or password is incorrect!</h3>
+            {% endif %}
+            <form action="" method="POST" >
+                {% csrf_token %}
+                <div class="inputs">
+                    <div class="input_field">
+                        <input id="signin_username" name="username" type="text" autocomplete="off" required>
+                        <label for="signin_username">Username <span>*</span></label>
+                    </div>
+                    <div class="input_field">
+                        <input id="signin_password" type="password" name="password" required>
+                        <label for="signin_username">Password <span>*</span></label>
+                        <div class="eye_input">
+                            <img id="signin_eye_open" src="{% static 'user_authentication/login/images/eye_open_icon.svg' %}">
+                            <img id="signin_eye_closed" src="{% static 'user_authentication/login/images/eye_closed_icon.svg' %}">
+                        </div>
+                    </div>
+                </div>
+                <div id="or">
+                    <p>or</p>
+                </div>
+                <div id="social_media_list">
+                    <!-- <div id="g_id_onload"
+                        data-client_id="941836559759-va537vrci12u6osj2d9oihrtsacnhsl0.apps.googleusercontent.com"
+                        data-login_uri="http://127.0.0.1:5500/signin_signup.html" data-auto_prompt="false"
+                        class="social_media_btn">
+                        <img src="images/google_icon.svg" alt="Sign in with Google">
+                        Sign in with Google
+                        <div id="google_highlight"></div>
+                    </div> -->
+                    <div class="g-signin2"></div>
+                    <!-- <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline"
+                        data-text="sign_in_with" data-shape="rectangular" data-callback="OnSuccess"
+                        data-logo_alignment="left">
+                    </div> -->
+                </div>
+
+                <div class="submit_btn">
+                    <div class="outline_submit_btn"></div>
+                    <div class="outline_submit_btn"></div>
+                    <button type="submit" id="signin_btn">SIGN IN</button>
+                </div>
+
+            </form>
+        </div>
+        <div id="to_signup" class="to_other_form">
+            <p>If you are new here <a href="{% url 'signup' %}">SIGN UP</a></p>
+        </div>
+    </div>
+
+    <!-- </div> -->
+    <script defer src="{% static 'user_authentication/login/login.js' %}"></script>
+</body>
+
+</html>
